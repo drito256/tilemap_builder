@@ -7,7 +7,7 @@
 #include "../glad/glad.h"
 #include "../glm/glm.hpp"
 
-namespace the_cube{
+namespace tilemap_builder{
     class Tile{
         private:
             std::array<glm::vec3, 6> m_vertices;

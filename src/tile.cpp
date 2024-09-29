@@ -1,8 +1,8 @@
-#include "../include/the_cube/tile.h"
+#include "../include/tilemap_builder/tile.h"
 
 
 // temp constructor
-the_cube::Tile::Tile(std::array<glm::vec3, 6> vertices){
+tilemap_builder::Tile::Tile(std::array<glm::vec3, 6> vertices){
 
       m_vertices = vertices;
       glGenVertexArrays(1, &vao);
@@ -20,7 +20,7 @@ the_cube::Tile::Tile(std::array<glm::vec3, 6> vertices){
 }
 
 // pitch and roll angles supported , yaw not (not needed)
-the_cube::Tile::Tile(glm::vec3 pos, glm::vec3 angle_vector){
+tilemap_builder::Tile::Tile(glm::vec3 pos, glm::vec3 angle_vector){
 
       if(angle_vector.x != 0.f && angle_vector.z != 0.f){
           std::cerr << "YAW NOT SUPPORTED!\n";
@@ -65,16 +65,16 @@ the_cube::Tile::Tile(glm::vec3 pos, glm::vec3 angle_vector){
       color = glm::vec3(1,1,1);
 }
 
-void the_cube::Tile::render(){
+void tilemap_builder::Tile::render(){
     bind_vao();
     glDrawArrays(GL_TRIANGLES, 0, m_vertices.size());
 }
 
-glm::vec3 the_cube::Tile::get_color(){
+glm::vec3 tilemap_builder::Tile::get_color(){
     return color;
 }
 
-void the_cube::Tile::bind_vao(){
+void tilemap_builder::Tile::bind_vao(){
     glBindVertexArray(vao);
 }
 

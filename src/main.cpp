@@ -2,17 +2,13 @@
 #include <iostream>
 #include <GLFW/glfw3.h>
 
-#include "../include/the_cube/stb_image.h"
-#include "../include/the_cube/shader.h"
-#include "../include/the_cube/camera.h"
-#include "../include/the_cube/cube.h"
-#include "../include/the_cube/tile.h"
-#include "../include/the_cube/constants.h"
+#include "../include/tilemap_builder/shader.h"
+#include "../include/tilemap_builder/camera.h"
+#include "../include/tilemap_builder/tile.h"
+#include "../include/tilemap_builder/constants.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width =  Screen::width, 
                                                    int height = Screen::height);
-void processInput(GLFWwindow *window, the_cube::Cube& cube);
-
 int main()
 {
     // glfw: initialize and configure
@@ -51,9 +47,8 @@ int main()
     Shader shader("shaders/shader.vs", "shaders/shader.fs");
     Shader tile_shader("shaders/tile_shader.vs", "shaders/tile_shader.fs");
 
-    the_cube::Cube cube(glm::vec3(.0f), 1.f);
     Camera c(glm::vec3(1.5f,3.f,5), 45.f);
-/*    the_cube::Tile tile(std::array<glm::vec3, 6>{
+/*    tilemap_builder::Tile tile(std::array<glm::vec3, 6>{
                         glm::vec3(0.25f,0.f,-0.25f),                         
                         glm::vec3(-0.25f,0.f,-0.25f),                         
                         glm::vec3(0.25f,0.f,0.25f),                         
@@ -62,7 +57,8 @@ int main()
                         glm::vec3(-0.25f,0.f,0.25f),                         
                         glm::vec3(0.25f,0.f,0.25f)}
                         );*/
-    the_cube::Tile tile(glm::vec3(0.f,0.f,0.f), glm::vec3(0.00f,1.0f,0.0f));
+
+    tilemap_builder::Tile tile(glm::vec3(0.f,0.f,0.f), glm::vec3(0.00f,1.0f,0.0f));
 
     shader.use();
     shader.setMat4("projection", c.get_projection_matrix());
@@ -73,19 +69,13 @@ int main()
     glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     
-    //cube.rotate(30,the_cube::RotationDirection::LEFT);
+    //cube.rotate(30,tilemap_builder::RotationDirection::LEFT);
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
     {
-        processInput(window, cube);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        shader.use();
-        shader.setMat4("model", cube.get_model_matrix());
-        shader.setMat4("view", c.get_view_matrix());
-        cube.render();
-       
         tile_shader.use();
         tile_shader.setVec3("tile_color", tile.get_color());
         tile_shader.setMat4("view", c.get_view_matrix());
@@ -100,26 +90,6 @@ int main()
     return 0;
 }
 
-void processInput(GLFWwindow *window, the_cube::Cube& cube)
-{
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
-
-    if(glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS){
-        cube.roll(1, the_cube::RotationDirection::RIGHT);
-    }
-    else if(glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS){
-        cube.roll(1, the_cube::RotationDirection::LEFT);
-    }
-
-    if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS){
-        cube.roll(1, the_cube::RotationDirection::FORWARD);
-    }
-    else if(glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS){
-        cube.roll(1, the_cube::RotationDirection::BACKWARD);
-    }
-    
-}
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {

@@ -1,5 +1,5 @@
 #source file/files
-OBJS = main.cpp camera.cpp cube.cpp glad.c stb_image.cpp tile.cpp
+OBJS = main.cpp camera.cpp glad.c stb_image.cpp tile.cpp
 
 #compiler
 CC = g++
